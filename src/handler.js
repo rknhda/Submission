@@ -71,25 +71,21 @@ const addBooks = (request, h) => {
 };
 const getBooks = (request, h) => {
   const { name, reading, finished } = request.query;
-   let filteredBooks = books.filter(book => 
-    book.id && 
-    typeof book.name === 'string' && 
-    typeof book.publisher === 'string'
-  );
+   let filteredBooks = books
 
-  if (typeof name === 'string') {
+  if ( name) {
     const searchName = name.toLowerCase();
     filteredBooks = filteredBooks.filter(book =>
       book.name.toLowerCase().includes(searchName)
     );
   }
 
-  if (reading === "0" || reading === "1") {
+  if (reading) {
     const isReading = reading === "1";
     filteredBooks = books.filter((book) => book.reading === isReading);
   }
 
-  if (finished === "0" || finished === "1") {
+  if (finished) {
     const isFinished = finished === "1";
     filteredBooks = books.filter(
       (book) => book.finished === isFinished
@@ -100,9 +96,11 @@ const getBooks = (request, h) => {
     .response({
       status: "success",
       data: {
-        books: filteredBooks
-          .filter((book) => book.id && book.name && book.publisher)
-          .map(({ id, name, publisher }) => ({ id, name, publisher })),
+        books: filteredBooks.map((book) =>({
+          id: book.id,
+          name: book.name,
+          publisher: book.publisher,
+        })),
       },
     })
     .code(200);

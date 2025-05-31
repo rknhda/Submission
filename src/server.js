@@ -13,3 +13,4 @@ const init = async () => {
 init().catch(err => {
     console.log(err);
 });
+    // "start-dev": "nodemon src/server.js",
